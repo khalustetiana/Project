@@ -1,7 +1,13 @@
-from .pages.main_page import MainPage
+from .base_page import BasePage
+# noinspection PyUnresolvedReferences
+from selenium.webdriver.common.by import By
+# noinspection PyUnresolvedReferences
+from .locators import MainPageLocators
 
-def test_guest_can_go_to_login_page(browser):
-    link = "http://selenium1py.pythonanywhere.com/"
-    page = MainPage(browser, link)   # инициализируем Page Object, передаем в конструктор экземпляр драйвера и url адрес 
-    page.open()                      # открываем страницу
-    page.go_to_login_page() # выполняем метод страницы - переходим на страницу логина
+class MainPage(BasePage):
+    def go_to_login_page(self):
+        login_link = self.browser.find_element(By.CSS_SELECTOR, "#login_link")
+        login_link.click()
+
+    def should_be_login_link(self):
+        assert self.is_element_present(*MainPageLocators.LOGIN_LINK), "Login link is not presented"
